@@ -192,5 +192,54 @@ plt.show()
 print("Number of blue team members in the sub-grid:", (num_labels_blue))
 print("Number of red team members in the sub-grid: ", (num_labels_red))
 
+#%%
+img = cv2.imread('frame_200.jpg')
+
+
+img_hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+
+img_cut = img_hsv[150:630,0:1600]
+img_cut_original = img_rgb[150:630,0:1600]
+
+lower = np.array([0,0,168])
+upper = np.array([172,255,255])
+
+region = cv2.inRange(img_cut,lower,upper)
+plt.imshow(region)
+plt.show()
+
+coord =  find_longest_vertical_line(region)
+x, yn = coord
+y = yn + 150
+
+image = cv2.ellipse(img_rgb, (x,y), (300, 80),
+                    0, 0, 360, (0, 0, 255), 5)
+plt.imshow(img_rgb)
+plt.show()
 
 #%%
+img = cv2.imread('frame_200.jpg')
+
+
+img_hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+
+img_cut = img_hsv[150:630,0:1600]
+img_cut_original = img_rgb[150:630,0:1600]
+
+lower = np.array([0,0,168])
+upper = np.array([172,255,255])
+
+region = cv2.inRange(img_cut,lower,upper)
+plt.imshow(region)
+plt.show()
+
+coord =  find_longest_vertical_line(region)
+x, yn = coord
+y = yn + 150
+
+image = cv2.ellipse(img_rgb, (x,y), (300, 80),
+                    0, 0, 360, (0, 0, 255), 5)
+plt.imshow(img_rgb)
+plt.show()
