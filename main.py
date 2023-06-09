@@ -109,3 +109,88 @@ for coord in blob_coordinates_red:
     cv2.circle(img_rgb, (x, y), circle_radius, circle_color, 2)
 
 plt.imshow(img_rgb)
+
+#%%
+img = cv2.imread('frame_500.jpg')
+
+img_hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+
+img_cut = img_hsv[190:620,0:1600]
+img_cut_original = img_rgb[190:620,0:1600]
+
+lower_blue = np.array([80,50,50])
+upper_blue = np.array([140,255,255])
+
+img_blue = cv2.inRange(img_cut,lower_blue,upper_blue)
+
+plt.imshow(img_blue)
+plt.show()
+
+blob_coordinates_blue = find_blobs(img_blue)
+
+for coord in blob_coordinates_blue:
+    x, yn = coord
+    y = yn + 190
+    cv2.circle(img_rgb, (x, y), circle_radius, circle_color, 2)
+
+
+plt.imshow(img_rgb)
+
+#%%
+img = cv2.imread('frame_500.jpg')
+
+
+img_hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+
+img_cut = img_hsv[185:620,0:1600]
+img_cut_original = img_rgb[185:620,0:1600]
+
+for i in range(5):
+    cv2.line(img_cut_original, (int(img_cut_original.shape[1]/4*i), 0),(int(img_cut_original.shape[1]/4*i), img_cut_original.shape[0]), (255, 0, 0), 3, 1)
+
+for i in range(3):
+    cv2.line(img_cut_original, (0,int(img_cut_original.shape[0]/3*i)),(img_cut_original.shape[1],int(img_cut_original.shape[0]/3*i)), (255, 0, 0), 3, 1)
+
+plt.imshow(img_cut_original)
+plt.show()
+
+grid_size = (3, 4)
+row = 1
+col = 2
+
+
+height, width, _ = img_cut.shape
+grid_height, grid_width = grid_size
+
+sub_grid_height = height // grid_height
+sub_grid_width = width // grid_width
+
+start_y = row * sub_grid_height
+end_y = start_y + sub_grid_height
+start_x = col * sub_grid_width
+end_x = start_x + sub_grid_width
+
+sub_grid = img_cut_original[start_y:end_y, start_x:end_x]
+num_labels_blue = 0
+num_labels_red = 0
+
+for coord in blob_coordinates_blue:
+    x, y = coord
+    if start_x <= x < end_x and start_y <= y < end_y:
+        num_labels_blue += 1
+for coord in blob_coordinates_red:
+    x, y = coord
+    if start_x <= x < end_x and start_y <= y < end_y:
+        num_labels_red += 1
+
+
+plt.imshow(sub_grid)
+plt.show()
+
+print("Number of blue team members in the sub-grid:", (num_labels_blue))
+print("Number of red team members in the sub-grid: ", (num_labels_red))
+
+
+#%%
